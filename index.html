@@ -1,5 +1,17 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  })();
+</script>
 <title>DeskFriend</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cpath d='M64 26 Q62 15 67 7' stroke='%233E9E63' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M63 17 Q54 12 53 19 Q61 22 63 17 Z' fill='%233E9E63'/%3E%3Ccircle cx='67' cy='6.5' r='5' fill='%2357B87D'/%3E%3Cpath d='M64 110 C36 110 27 86 29 64 C31 41 45 26 64 26 C83 26 97 41 99 64 C101 86 92 110 64 110 Z' fill='%23E7A23C'/%3E%3Cellipse cx='64' cy='84' rx='21' ry='17' fill='%23F3C67E' opacity='0.7'/%3E%3Ccircle cx='52' cy='62' r='8' fill='%233C2B12'/%3E%3Ccircle cx='76' cy='62' r='8' fill='%233C2B12'/%3E%3Ccircle cx='49.5' cy='59' r='2.6' fill='%23FFFFFF'/%3E%3Ccircle cx='73.5' cy='59' r='2.6' fill='%23FFFFFF'/%3E%3Cpath d='M57 77 Q64 83 71 77' stroke='%233C2B12' stroke-width='3.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -70,7 +82,7 @@
   .nav-links a { color:var(--ink-soft); text-decoration:none; font-weight:600; font-size:.92rem; }
   .nav-links a:hover { color:var(--ink); }
   @media (max-width:640px) {
-    .nav-links { gap:14px; }
+    .nav-links { gap:10px; }
     .nav-links a { display:none; }
   }
   .btn {
@@ -84,6 +96,28 @@
   .btn-nav { padding:9px 16px; font-size:.85rem; }
   .btn-ghost { background:var(--surface); color:var(--ink); border:1px solid var(--line-deep); }
   .btn-ghost:hover { border-color:var(--marigold); }
+  .sr-only {
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .nav-icon-wrap { position:relative; display:inline-flex; }
+  .icon-btn {
+    display:inline-flex; align-items:center; justify-content:center; padding:0;
+    width:38px; height:38px; border-radius:50%; cursor:pointer;
+    background:var(--surface); border:1px solid var(--line-deep); color:var(--ink-soft);
+    transition:color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .icon-btn svg { width:18px; height:18px; display:block; }
+  .icon-btn:hover { color:var(--ink); border-color:var(--marigold); }
+  .icon-btn.copied { color:var(--leaf); border-color:var(--leaf); }
+  .icon-tip {
+    position:absolute; top:calc(100% + 10px); right:0; white-space:nowrap; z-index:1;
+    font-size:.78rem; font-weight:700; color:var(--leaf-deep);
+    background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:7px 12px;
+    box-shadow:var(--shadow-md); opacity:0; transform:translateY(-4px); pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .icon-tip.show { opacity:1; transform:translateY(0); }
 
   /* ---------------- hero ---------------- */
   .hero .wrap { display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(32px,6vw,72px); align-items:center; }
@@ -268,6 +302,18 @@
       <a href="#how">How it works</a>
       <a href="#pip">Meet Pip</a>
       <a href="#privacy">Privacy</a>
+      <button class="icon-btn" id="theme-toggle" type="button" title="Switch to dark mode" aria-label="Switch to dark mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <div class="nav-icon-wrap">
+        <button class="icon-btn" id="contact-btn" type="button" title="Copy support email" aria-label="Copy support email to clipboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M3 7l9 6 9-6"/>
+          </svg>
+        </button>
+        <span class="icon-tip" id="contact-tip" role="status" aria-live="polite"></span>
+      </div>
       <button class="btn btn-primary btn-nav" id="cta-nav" type="button">Get DeskFriend</button>
     </div>
   </div>
@@ -434,6 +480,70 @@
     ['cta-nav', 'cta-hero', 'cta-final'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener('click', fire);
+    });
+  })();
+
+  (function () {
+    var root = document.documentElement;
+    var toggle = document.getElementById('theme-toggle');
+    var MOON_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+    var SUN_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    function prefersDark() {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function isDark() {
+      var explicit = root.getAttribute('data-theme');
+      if (explicit === 'dark') return true;
+      if (explicit === 'light') return false;
+      return prefersDark();
+    }
+    function paint() {
+      var dark = isDark();
+      toggle.innerHTML = dark ? SUN_ICON : MOON_ICON;
+      var label = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      toggle.setAttribute('aria-label', label);
+      toggle.title = label;
+    }
+    toggle.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      root.style.colorScheme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+
+  (function () {
+    var EMAIL = 'deskfriend.app@gmail.com';
+    var btn = document.getElementById('contact-btn');
+    var tip = document.getElementById('contact-tip');
+    var MAIL_ICON = btn.innerHTML;
+    var CHECK_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>';
+    var resetTimer = null;
+    function showTip(text, ms) {
+      clearTimeout(resetTimer);
+      tip.textContent = text;
+      tip.classList.add('show');
+      resetTimer = setTimeout(function () { tip.classList.remove('show'); }, ms);
+    }
+    btn.addEventListener('click', function () {
+      function copied() {
+        btn.classList.add('copied');
+        btn.innerHTML = CHECK_ICON;
+        showTip('Copied ' + EMAIL, 1800);
+        setTimeout(function () {
+          btn.classList.remove('copied');
+          btn.innerHTML = MAIL_ICON;
+        }, 1800);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(copied, function () {
+          showTip('Email us: ' + EMAIL, 2600);
+        });
+      } else {
+        showTip('Email us: ' + EMAIL, 2600);
+      }
     });
   })();
 </script>
