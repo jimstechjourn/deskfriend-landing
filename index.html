@@ -95,6 +95,11 @@
     transition:transform .12s ease, box-shadow .12s ease;
   }
   .btn:active { transform:translateY(1px); }
+  a.btn { text-decoration:none; white-space:nowrap; }
+  .btn-nav .sm { display:none; }
+  @media (max-width:640px) { .btn-nav .lg { display:none; } .btn-nav .sm { display:inline; } }
+  .nav-links a.btn { display:inline-flex; color:#3C2B12; }
+  .nav-links a.btn:hover { color:#3C2B12; }
   .btn-primary { background:var(--marigold); color:#3C2B12; box-shadow:var(--shadow-md); }
   .btn-primary:hover { box-shadow:var(--shadow-lg); }
   .btn-nav { padding:9px 16px; font-size:.85rem; }
@@ -131,12 +136,6 @@
   .hero-lede { margin-top:20px; max-width:46ch; font-size:1.12rem; color:var(--ink-soft); }
   .hero-ctas { display:flex; align-items:center; gap:16px; margin-top:30px; flex-wrap:wrap; }
   .hero-note { font-family:var(--font-mono); font-size:.76rem; color:var(--ink-faint); letter-spacing:.02em; }
-  .toast {
-    display:inline-flex; align-items:center; gap:8px; font-size:.86rem; font-weight:700; color:var(--leaf-deep);
-    background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:8px 14px;
-    opacity:0; transform:translateY(4px); transition:opacity .2s ease, transform .2s ease;
-  }
-  .toast.show { opacity:1; transform:translateY(0); }
 
   .stage {
     background:var(--surface-2); border:1px solid var(--line); border-radius:28px;
@@ -318,7 +317,7 @@
         </button>
         <span class="icon-tip" id="contact-tip" role="status" aria-live="polite"></span>
       </div>
-      <button class="btn btn-primary btn-nav" id="cta-nav" type="button">Get DeskFriend</button>
+      <a class="btn btn-primary btn-nav" id="cta-nav" href="https://chromewebstore.google.com/detail/deskfriend/jgbenhpehfoakcbminfkgfdocimcgfoa" target="_blank" rel="noopener"><span class="lg">Add to Chrome</span><span class="sm">Install</span></a>
     </div>
   </div>
 </nav>
@@ -330,8 +329,7 @@
       <h1>A good friend won&rsquo;t<br>let you <span class="accent">sit all day</span>.</h1>
       <p class="hero-lede">At a convenient interval you choose, DeskFriend taps you on the shoulder with a standing stretch or a guided breath &mdash; never more than a minute, and never guilt-trippy about a Skip.</p>
       <div class="hero-ctas">
-        <button class="btn btn-primary" id="cta-hero" type="button">Get DeskFriend</button>
-        <span class="toast" id="toast">Not live yet &mdash; thanks for checking in.</span>
+        <a class="btn btn-primary" id="cta-hero" href="https://chromewebstore.google.com/detail/deskfriend/jgbenhpehfoakcbminfkgfdocimcgfoa" target="_blank" rel="noopener">Add to Chrome</a>
       </div>
       <p class="hero-note" style="margin-top:18px">Free &middot; No account &middot; Nothing leaves your device</p>
     </div>
@@ -459,9 +457,9 @@
     <p class="kicker">Get started</p>
     <h2>Your desk. Your friend. Your streak.</h2>
     <div class="hero-ctas">
-      <button class="btn btn-primary" id="cta-final" type="button">Get DeskFriend</button>
+      <a class="btn btn-primary" id="cta-final" href="https://chromewebstore.google.com/detail/deskfriend/jgbenhpehfoakcbminfkgfdocimcgfoa" target="_blank" rel="noopener">Add to Chrome</a>
     </div>
-    <span class="hero-note">Chrome Web Store listing is on the way &mdash; this page will link straight there.</span>
+    <span class="hero-note">Free on the Chrome Web Store &middot; No account &middot; Nothing leaves your device</span>
   </div>
 </section>
 
@@ -473,20 +471,6 @@
 </footer>
 
 <script>
-  (function () {
-    var toast = document.getElementById('toast');
-    var timer = null;
-    function fire() {
-      toast.classList.add('show');
-      clearTimeout(timer);
-      timer = setTimeout(function () { toast.classList.remove('show'); }, 3200);
-    }
-    ['cta-nav', 'cta-hero', 'cta-final'].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener('click', fire);
-    });
-  })();
-
   (function () {
     var root = document.documentElement;
     var toggle = document.getElementById('theme-toggle');
