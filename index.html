@@ -179,6 +179,8 @@
   .stage .count { font-family:var(--font-mono); font-size:1.6rem; color:var(--marigold-deep); min-height:1.2em; }
   .stage .count::after { content:"4"; }
   .stage .meta { font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px; }
+  .stage-link { margin-top:6px; font-weight:700; font-size:.9rem; text-decoration:none; }
+  .stage-link:hover { text-decoration:underline; }
   .anim-box .pip-body { animation: boxBreath 16s ease-in-out infinite; }
   .anim-box .pip-smile { animation: smileGrow 16s ease-in-out infinite; }
   .anim-box .phase::after { animation: boxLabel 16s step-end infinite; }
@@ -379,6 +381,7 @@
       <div class="phase" aria-live="polite"></div>
       <div class="count"></div>
       <p class="meta">Box breathing &middot; 4 in &middot; 4 hold &middot; 4 out &middot; 4 hold</p>
+      <a class="stage-link" href="/breathe">Try it full screen &rarr;</a>
     </div>
   </div>
 </header>

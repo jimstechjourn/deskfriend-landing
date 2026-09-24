@@ -1,0 +1,616 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  })();
+</script>
+<title>Box breathing timer — breathe along with Pip | DeskFriend</title>
+<meta name="description" content="A free, guided box-breathing timer: 4 seconds in, hold 4, out 4, hold 4. Breathe along with Pip for 1, 3 or 5 minutes, with optional waves, rain or fireplace sounds. No sign-up, nothing to install.">
+<link rel="canonical" href="https://deskfriend.app/breathe">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DeskFriend">
+<meta property="og:url" content="https://deskfriend.app/breathe">
+<meta property="og:title" content="Box breathing timer — breathe along with Pip">
+<meta property="og:description" content="4 in, 4 hold, 4 out, 4 hold. A free guided breathing timer. No sign-up, nothing to install.">
+<meta property="og:image" content="https://deskfriend.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Box breathing timer — breathe along with Pip">
+<meta name="twitter:description" content="4 in, 4 hold, 4 out, 4 hold. A free guided breathing timer. No sign-up, nothing to install.">
+<meta name="twitter:image" content="https://deskfriend.app/og-image.png">
+<meta name="theme-color" content="#E7A23C">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme:light;
+    --paper:#F7F1E4; --surface:#FFFDF7; --surface-2:#FBEFDA; --line:#E7DEC9; --line-deep:#D8CBAE;
+    --ink:#3C2B12; --ink-soft:#7A6748; --ink-faint:#A9906F;
+    --marigold:#E7A23C; --marigold-tint:#F3C67E; --marigold-deep:#C9832A;
+    --leaf:#3E9E63; --leaf-bright:#57B87D; --leaf-deep:#255F3E;
+    --shadow-sm: 0 1px 2px rgba(60,43,18,.06);
+    --shadow-md: 0 14px 34px -18px rgba(60,43,18,.35);
+    --shadow-lg: 0 30px 60px -24px rgba(60,43,18,.4);
+    --font-display:"Fredoka","Trebuchet MS",sans-serif;
+    --font-body:"Nunito",-apple-system,"Segoe UI",sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme:dark;
+      --paper:#161109; --surface:#1F1810; --surface-2:#241B10; --line:#33281A; --line-deep:#46381F;
+      --ink:#F1E7D4; --ink-soft:#B7A587; --ink-faint:#7D6C50;
+      --marigold:#F0B45C; --marigold-tint:#8A6431; --marigold-deep:#E7A23C;
+      --leaf:#5FBF8B; --leaf-bright:#6FCF9B; --leaf-deep:#8FD3AC;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-md: 0 16px 36px -18px rgba(0,0,0,.6);
+      --shadow-lg: 0 34px 64px -24px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#161109; --surface:#1F1810; --surface-2:#241B10; --line:#33281A; --line-deep:#46381F;
+    --ink:#F1E7D4; --ink-soft:#B7A587; --ink-faint:#7D6C50;
+    --marigold:#F0B45C; --marigold-tint:#8A6431; --marigold-deep:#E7A23C;
+    --leaf:#5FBF8B; --leaf-bright:#6FCF9B; --leaf-deep:#8FD3AC;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 16px 36px -18px rgba(0,0,0,.6);
+    --shadow-lg: 0 34px 64px -24px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--font-body); line-height:1.6; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3 { font-family:var(--font-display); font-weight:600; text-wrap:balance; margin:0; }
+  p { margin:0; }
+  .wrap { max-width:1120px; margin:0 auto; padding-left:clamp(16px,4vw,48px); padding-right:clamp(16px,4vw,48px); }
+  .narrow { max-width:720px; }
+  .kicker {
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--marigold-deep); margin:0 0 14px;
+  }
+  a { color:var(--marigold-deep); }
+  :focus-visible { outline:2px solid var(--marigold); outline-offset:3px; border-radius:4px; }
+
+  /* ---------------- nav (matches index.html) ---------------- */
+  .nav {
+    position:sticky; top:0; z-index:20; backdrop-filter:blur(10px);
+    background:color-mix(in srgb, var(--paper) 82%, transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .nav .wrap { display:flex; align-items:center; justify-content:space-between; padding-top:14px; padding-bottom:14px; }
+  .brand { display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:600; font-size:1.15rem; color:var(--ink); text-decoration:none; }
+  .brand svg { display:block; width:34px; height:34px; }
+  .nav-links { display:flex; align-items:center; gap:12px; }
+  .btn {
+    font-family:var(--font-body); font-weight:800; font-size:.92rem; cursor:pointer;
+    border:none; border-radius:12px; padding:12px 22px; display:inline-flex; align-items:center; gap:9px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active { transform:translateY(1px); }
+  a.btn { text-decoration:none; white-space:nowrap; }
+  .btn-primary { background:var(--marigold); color:#3C2B12; box-shadow:var(--shadow-md); }
+  .btn-primary:hover { box-shadow:var(--shadow-lg); }
+  .btn-ghost { background:var(--surface); color:var(--ink); border:1px solid var(--line-deep); }
+  .btn-ghost:hover { border-color:var(--marigold); }
+  .btn-nav { padding:9px 16px; font-size:.85rem; }
+  .btn-nav .sm { display:none; }
+  @media (max-width:640px) { .btn-nav .lg { display:none; } .btn-nav .sm { display:inline; } }
+  .icon-btn {
+    display:inline-flex; align-items:center; justify-content:center; padding:0;
+    width:38px; height:38px; border-radius:50%; cursor:pointer;
+    background:var(--surface); border:1px solid var(--line-deep); color:var(--ink-soft);
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .icon-btn svg { width:18px; height:18px; display:block; }
+  .icon-btn:hover { color:var(--ink); border-color:var(--marigold); }
+
+  /* ---------------- the breathing stage ---------------- */
+  .breathe { padding:clamp(20px,3.5vw,40px) 0 clamp(48px,7vw,80px); text-align:center; }
+  .breathe h1 { font-size:clamp(2rem,4.4vw,2.8rem); line-height:1.08; letter-spacing:-.01em; }
+  .breathe .sub { margin:10px auto 0; max-width:60ch; color:var(--ink-soft); font-size:1.05rem; }
+  .stage {
+    margin:clamp(18px,3vw,28px) auto 0; max-width:560px;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:28px;
+    padding:clamp(16px,3vw,28px) clamp(20px,4vw,36px) clamp(22px,3vw,32px);
+    box-shadow:var(--shadow-lg); display:flex; flex-direction:column; align-items:center; gap:4px;
+  }
+  .stage-pip { width:min(220px,56vw); height:auto; }
+  @media (max-height:860px) {
+    .breathe .kicker { margin-bottom:8px; }
+    .stage-pip { width:min(170px,56vw); }
+    .controls { gap:10px; margin-top:8px; }
+  }
+  .phase { font-family:var(--font-display); font-weight:600; font-size:clamp(1.5rem,3.4vw,1.9rem); min-height:1.5em; margin-top:4px; }
+  .count { font-family:var(--font-mono); font-size:2rem; line-height:1.2; color:var(--marigold-deep); min-height:1.2em; font-variant-numeric:tabular-nums; }
+  .remaining { font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); min-height:1.4em; }
+
+  .controls { display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:12px; }
+  .lengths { display:inline-flex; background:var(--surface); border:1px solid var(--line-deep); border-radius:999px; padding:4px; gap:2px; }
+  .lengths button {
+    font:700 .85rem var(--font-body); color:var(--ink-soft); background:none; border:none;
+    border-radius:999px; padding:7px 16px; cursor:pointer;
+  }
+  .lengths button[aria-pressed="true"] { background:var(--marigold); color:#3C2B12; }
+  @media (max-width:380px) { .lengths button { padding:7px 11px; } }
+  .hint { font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); }
+  @media (hover:none) { .hint { display:none; } }
+  /* Mid-session only Stop and the sound picker matter; keeps Stop above the fold. */
+  .running #lengths, .running .hint { display:none; }
+
+  .done-note { margin-top:6px; color:var(--ink-soft); max-width:36ch; }
+  .done-note strong { color:var(--leaf); }
+
+  /* Pip's breath. The body/smile keyframes are the same as the landing-page hero;
+     here they only run while a session is going, and restart from 0 on Start
+     so the animation lines up with the JS phase/count. */
+  .pip-body { transform-box: view-box; transform-origin: 64px 112px; }
+  .pip-smile { transform-box: fill-box; transform-origin: center; }
+  .running .pip-body { animation: boxBreath 16s ease-in-out infinite; }
+  .running .pip-smile { animation: smileGrow 16s ease-in-out infinite; }
+  @keyframes boxBreath {
+    0%   { transform: translateY(0)    scale(1, 1); }
+    25%  { transform: translateY(-11px) scale(1.3, 1.16); }
+    50%  { transform: translateY(-11px) scale(1.3, 1.16); }
+    75%  { transform: translateY(0)    scale(1, 1); }
+    100% { transform: translateY(0)    scale(1, 1); }
+  }
+  @keyframes smileGrow {
+    0%   { transform: scale(1, 1); }
+    25%  { transform: scale(1.45, 1.3); }
+    50%  { transform: scale(1.45, 1.3); }
+    75%  { transform: scale(1, 1); }
+    100% { transform: scale(1, 1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .running .pip-body, .running .pip-smile { animation:none; }
+  }
+
+  /* ---------------- explainer + CTA ---------------- */
+  .about { padding:clamp(48px,7vw,88px) 0; border-top:1px solid var(--line); }
+  .about h2 { font-size:clamp(1.6rem,3vw,2.1rem); line-height:1.15; }
+  .about p:not(.kicker) { margin-top:14px; color:var(--ink-soft); font-size:1.02rem; }
+  .steps { list-style:none; padding:0; margin:22px 0 0; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  @media (max-width:640px) { .steps { grid-template-columns:repeat(2,1fr); } }
+  .steps li { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px 12px; text-align:center; }
+  .steps b { display:block; font-family:var(--font-mono); font-size:1.5rem; color:var(--marigold-deep); }
+  .steps span { font-weight:700; font-size:.9rem; }
+  .fine-print { font-size:.85rem !important; color:var(--ink-faint) !important; }
+
+  .cta { padding:0 0 clamp(56px,8vw,96px); }
+  .cta-card {
+    display:flex; align-items:center; gap:clamp(18px,4vw,36px); flex-wrap:wrap;
+    background:var(--surface); border:1px solid var(--line); border-radius:24px;
+    padding:clamp(22px,4vw,36px); box-shadow:var(--shadow-md);
+  }
+  .cta-card svg { width:88px; height:88px; flex:none; }
+  .cta-card .copy { flex:1; min-width:220px; }
+  .cta-card h2 { font-size:clamp(1.3rem,2.6vw,1.6rem); line-height:1.2; }
+  .cta-card p { margin-top:8px; color:var(--ink-soft); }
+  .cta-card .note { margin-top:10px; font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); }
+  @media (max-width:560px) { .cta-card { flex-direction:column; text-align:center; } .cta-card .copy { min-width:0; } }
+
+  footer { border-top:1px solid var(--line); padding:28px 0; }
+  footer .wrap { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  footer .brand { font-size:.98rem; }
+  footer .fine { font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); }
+  footer .fine a { color:inherit; }
+</style>
+</head><body>
+
+<!-- shared Pip artwork (same as index.html) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="pip-mark">
+      <path d="M64 26 Q62 15 67 7" stroke="#3E9E63" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M63 17 Q54 12 53 19 Q61 22 63 17 Z" fill="#3E9E63"/>
+      <circle cx="67" cy="6.5" r="5" fill="#57B87D"/>
+      <path d="M64 110 C36 110 27 86 29 64 C31 41 45 26 64 26 C83 26 97 41 99 64 C101 86 92 110 64 110 Z" fill="#E7A23C"/>
+      <ellipse cx="64" cy="84" rx="21" ry="17" fill="#F3C67E" opacity="0.7"/>
+      <circle cx="52" cy="62" r="8" fill="#3C2B12"/>
+      <circle cx="76" cy="62" r="8" fill="#3C2B12"/>
+      <circle cx="49.5" cy="59" r="2.6" fill="#FFFFFF"/>
+      <circle cx="73.5" cy="59" r="2.6" fill="#FFFFFF"/>
+      <path d="M57 77 Q64 83 71 77" stroke="#3C2B12" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+    </g>
+  </defs>
+</svg>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 128 128"><use href="#pip-mark"/></svg> DeskFriend</a>
+    <div class="nav-links">
+      <button class="icon-btn" id="theme-toggle" type="button" title="Switch to dark mode" aria-label="Switch to dark mode"></button>
+      <a class="btn btn-primary btn-nav" href="https://chromewebstore.google.com/detail/deskfriend/jgbenhpehfoakcbminfkgfdocimcgfoa" target="_blank" rel="noopener"><span class="lg">Add to Chrome</span><span class="sm">Install</span></a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<section class="breathe">
+  <div class="wrap">
+    <p class="kicker">Box breathing timer</p>
+    <h1>Take a minute. Breathe with Pip.</h1>
+    <p class="sub">4 in, 4 hold, 4 out, 4 hold. Just follow Pip and the count.</p>
+
+    <div class="stage" id="stage">
+      <svg class="stage-pip" viewBox="-16 -30 160 150" role="img" aria-label="Pip, DeskFriend's mascot">
+        <g class="pip-body">
+          <path d="M64 26 Q62 15 67 7" stroke="#3E9E63" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M63 17 Q54 12 53 19 Q61 22 63 17 Z" fill="#3E9E63"/>
+          <circle cx="67" cy="6.5" r="5" fill="#57B87D"/>
+          <path d="M64 110 C36 110 27 86 29 64 C31 41 45 26 64 26 C83 26 97 41 99 64 C101 86 92 110 64 110 Z" fill="#E7A23C"/>
+          <ellipse cx="64" cy="84" rx="21" ry="17" fill="#F3C67E" opacity="0.7"/>
+          <path d="M52 62 Q56 57 60 62" stroke="#3C2B12" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+          <path d="M68 62 Q72 57 76 62" stroke="#3C2B12" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+          <path class="pip-smile" d="M58 76 Q64 81 70 76" stroke="#3C2B12" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <div class="phase" id="phase" aria-live="polite">Ready when you are</div>
+      <div class="count" id="count" aria-hidden="true" hidden></div>
+      <div class="remaining" id="remaining" hidden></div>
+      <p class="done-note" id="done-note" hidden></p>
+
+      <div class="controls">
+        <div class="lengths" id="lengths" role="group" aria-label="Session length">
+          <button type="button" data-min="1" aria-pressed="true">1 min</button>
+          <button type="button" data-min="3" aria-pressed="false">3 min</button>
+          <button type="button" data-min="5" aria-pressed="false">5 min</button>
+        </div>
+        <div class="lengths" id="sounds" role="group" aria-label="Background sound">
+          <button type="button" data-sound="off" aria-pressed="true">Silent</button>
+          <button type="button" data-sound="waves" aria-pressed="false">Waves</button>
+          <button type="button" data-sound="rain" aria-pressed="false">Rain</button>
+          <button type="button" data-sound="fire" aria-pressed="false">Fireplace</button>
+        </div>
+        <button class="btn btn-primary" id="toggle" type="button">Start</button>
+        <span class="hint">Space to start or stop</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap narrow">
+    <p class="kicker">What is box breathing?</p>
+    <h2>Four equal sides, like a box.</h2>
+    <p>Box breathing (sometimes called square breathing) is a simple, steady rhythm: you breathe in, hold, breathe out and hold again, each for the same count. Many people use it to slow down between meetings or reset before something stressful.</p>
+    <ol class="steps">
+      <li><b>4</b><span>Breathe in</span></li>
+      <li><b>4</b><span>Hold</span></li>
+      <li><b>4</b><span>Breathe out</span></li>
+      <li><b>4</b><span>Hold</span></li>
+    </ol>
+    <p>Breathe in through your nose if that's comfortable, and let the out-breath be slow and easy. If holding for four feels like too much, shorten the holds. There's no wrong way to take a calm minute.</p>
+    <p class="fine-print">If you feel dizzy or uncomfortable, stop and breathe normally. This is a relaxation exercise, not medical advice.</p>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap narrow">
+    <div class="cta-card">
+      <svg viewBox="0 0 128 128" aria-hidden="true"><use href="#pip-mark"/></svg>
+      <div class="copy">
+        <h2>Want Pip to remind you?</h2>
+        <p>DeskFriend is a free Chrome extension that nudges you every so often with a standing stretch or a breathing break like this one.</p>
+        <p class="note">No account &middot; Nothing leaves your device</p>
+      </div>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/deskfriend/jgbenhpehfoakcbminfkgfdocimcgfoa" target="_blank" rel="noopener">Add to Chrome</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 128 128" style="width:24px;height:24px"><use href="#pip-mark"/></svg> DeskFriend</a>
+    <span class="fine"><a href="/privacy">Privacy</a> &middot; A good friend won&rsquo;t let you sit all day.</span>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle — same behaviour as index.html (shared localStorage key).
+  (function () {
+    var root = document.documentElement;
+    var toggle = document.getElementById('theme-toggle');
+    var MOON_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+    var SUN_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    function isDark() {
+      var explicit = root.getAttribute('data-theme');
+      if (explicit === 'dark') return true;
+      if (explicit === 'light') return false;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function paint() {
+      var dark = isDark();
+      toggle.innerHTML = dark ? SUN_ICON : MOON_ICON;
+      var label = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      toggle.setAttribute('aria-label', label);
+      toggle.title = label;
+    }
+    toggle.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      root.style.colorScheme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+
+  // Background sound. Generated live with the Web Audio API from shaped noise:
+  // no audio files, no licences, nothing fetched from anywhere. Waves follow
+  // the breath (swell on the in-breath, recede on the out-breath).
+  var Sound = (function () {
+    var ctx = null, master = null, bus = null, buffers = {};
+
+    function ensure() {
+      if (!ctx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return false;
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0.8;
+        // Limiter so no sound can clip on loud speakers.
+        var limiter = ctx.createDynamicsCompressor();
+        limiter.threshold.value = -8; limiter.knee.value = 4; limiter.ratio.value = 20;
+        limiter.attack.value = 0.003; limiter.release.value = 0.25;
+        master.connect(limiter).connect(ctx.destination);
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+      return true;
+    }
+
+    // 8s of looping noise. The drift correction makes the last sample meet the
+    // first, so brown noise doesn't click at the loop point.
+    function noise(type) {
+      if (buffers[type]) return buffers[type];
+      var len = ctx.sampleRate * 8, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+      var b0 = 0, b1 = 0, b2 = 0, last = 0, i, w;
+      for (i = 0; i < len; i++) {
+        w = Math.random() * 2 - 1;
+        if (type === 'white') d[i] = w;
+        else if (type === 'pink') {
+          b0 = 0.99765 * b0 + w * 0.099; b1 = 0.963 * b1 + w * 0.2965; b2 = 0.57 * b2 + w * 1.0527;
+          d[i] = (b0 + b1 + b2 + w * 0.1848) * 0.2;
+        } else { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+      }
+      var drift = d[len - 1] - d[0];
+      for (i = 0; i < len; i++) d[i] -= drift * i / len;
+      return (buffers[type] = buf);
+    }
+
+    function filter(type, freq, q) {
+      var f = ctx.createBiquadFilter();
+      f.type = type; f.frequency.value = freq;
+      if (q) f.Q.value = q;
+      return f;
+    }
+    function gain(v) { var g = ctx.createGain(); g.gain.value = v; return g; }
+    function loop(b, type) {
+      var s = ctx.createBufferSource();
+      s.buffer = noise(type); s.loop = true;
+      s.start(0, Math.random() * 8);
+      b.sources.push(s);
+      return s;
+    }
+
+    function crackles(b) {
+      var next = ctx.currentTime + 0.2;
+      (function schedule() {
+        if (b.dead) return;
+        while (next < ctx.currentTime + 0.6) {
+          var s = ctx.createBufferSource(), g = ctx.createGain(), r = Math.random();
+          var amp = 0.08 + r * r * r * 0.7; // mostly soft ticks, the odd loud pop
+          s.buffer = noise('white');
+          g.gain.setValueAtTime(0, next);
+          g.gain.linearRampToValueAtTime(amp, next + 0.002);
+          g.gain.exponentialRampToValueAtTime(0.001, next + 0.01 + Math.random() * 0.05);
+          s.connect(filter('highpass', 1500 + Math.random() * 3500)).connect(g).connect(b.out);
+          s.start(next, Math.random() * 7);
+          s.stop(next + 0.1);
+          next += 0.02 - Math.log(1 - Math.random()) * 0.1;
+        }
+        b.timer = setTimeout(schedule, 250);
+      })();
+    }
+
+    var BUILD = {
+      rain: function (b) {
+        loop(b, 'pink').connect(filter('highpass', 500)).connect(filter('lowpass', 7000)).connect(gain(0.55)).connect(b.out);
+        loop(b, 'brown').connect(filter('lowpass', 700)).connect(gain(0.35)).connect(b.out);
+      },
+      waves: function (b) {
+        b.swell = gain(0.2);
+        b.tone = filter('lowpass', 450);
+        b.tone.connect(b.swell).connect(b.out);
+        loop(b, 'brown').connect(b.tone);
+        loop(b, 'pink').connect(filter('highpass', 900)).connect(gain(0.12)).connect(b.tone);
+      },
+      // Crackles only. A low rumble layer read as surf, too close to Waves.
+      fire: function (b) { crackles(b); }
+    };
+
+    function stop(fade) {
+      var b = bus;
+      bus = null;
+      if (!b) return;
+      b.dead = true;
+      clearTimeout(b.timer);
+      var t = ctx.currentTime, f = fade == null ? 1.5 : fade;
+      b.out.gain.cancelScheduledValues(t);
+      b.out.gain.setValueAtTime(b.out.gain.value, t);
+      b.out.gain.linearRampToValueAtTime(0, t + f);
+      b.sources.forEach(function (s) { s.stop(t + f + 0.05); });
+      setTimeout(function () { b.out.disconnect(); }, (f + 0.2) * 1000);
+    }
+
+    function play(kind) {
+      if (!BUILD[kind] || !ensure()) return;
+      stop(0.6); // crossfade out whatever was playing
+      var b = { kind: kind, sources: [], out: gain(0) };
+      b.out.connect(master);
+      BUILD[kind](b);
+      b.out.gain.linearRampToValueAtTime(1, ctx.currentTime + 1.5);
+      bus = b;
+    }
+
+    // Called on each breathing phase: 0 in, 1 hold, 2 out, 3 hold.
+    function breath(phase) {
+      if (!bus || bus.kind !== 'waves') return;
+      // In-breath and the hold after it are "up"; a hold only nudges quickly
+      // to the right level (matters when waves are switched on mid-session).
+      var t = ctx.currentTime, up = phase < 2, ramp = phase % 2 ? 0.5 : 4;
+      [[bus.swell.gain, up ? 1 : 0.2], [bus.tone.frequency, up ? 1500 : 450]].forEach(function (p) {
+        p[0].cancelScheduledValues(t);
+        p[0].setValueAtTime(p[0].value, t);
+        p[0].linearRampToValueAtTime(p[1], t + ramp);
+      });
+    }
+
+    return { play: play, stop: stop, breath: breath };
+  })();
+
+  // Breathing session. 16s box (4 phases x 4s); everything is derived from
+  // elapsed wall-clock time so the text can't drift from Pip's CSS animation.
+  (function () {
+    var PHASES = ['Breathe in', 'Hold', 'Breathe out', 'Hold'];
+    var PHASE_MS = 4000, CYCLE_MS = 16000;
+
+    var stage = document.getElementById('stage');
+    var phaseEl = document.getElementById('phase');
+    var countEl = document.getElementById('count');
+    var remainingEl = document.getElementById('remaining');
+    var doneNote = document.getElementById('done-note');
+    var toggleBtn = document.getElementById('toggle');
+    var lengthBtns = document.querySelectorAll('#lengths button');
+    var soundBtns = document.querySelectorAll('#sounds button');
+    var sound = 'off', previewTimer = null;
+
+    // Keep a phone's screen on during a session. Nobody touches the screen
+    // while breathing, so auto-lock would otherwise dim it mid-session.
+    var wakeLock = null;
+    function keepAwake(on) {
+      if (!('wakeLock' in navigator)) return;
+      if (on && !wakeLock) {
+        navigator.wakeLock.request('screen').then(function (l) {
+          if (!timer) return l.release(); // session ended before the lock arrived
+          wakeLock = l;
+          l.addEventListener('release', function () { wakeLock = null; });
+        }, function () {});
+      } else if (!on && wakeLock) {
+        wakeLock.release();
+      }
+    }
+    // The browser drops the lock when the tab is hidden; take it back on return.
+    document.addEventListener('visibilitychange', function () {
+      if (timer && document.visibilityState === 'visible') keepAwake(true);
+    });
+
+    var minutes = 1, startedAt = 0, totalMs = 0, timer = null, lastPhase = -1;
+
+    function fmt(ms) {
+      var s = Math.ceil(ms / 1000), m = Math.floor(s / 60);
+      return m + ':' + String(s % 60).padStart(2, '0');
+    }
+
+    function tick() {
+      var elapsed = Date.now() - startedAt;
+      if (elapsed >= totalMs) return finish(true);
+      var inCycle = elapsed % CYCLE_MS;
+      var phase = Math.floor(inCycle / PHASE_MS);
+      if (phase !== lastPhase) { phaseEl.textContent = PHASES[phase]; lastPhase = phase; Sound.breath(phase); }
+      countEl.textContent = 4 - Math.floor((inCycle % PHASE_MS) / 1000);
+      remainingEl.textContent = fmt(totalMs - elapsed) + ' left';
+    }
+
+    function start() {
+      // Whole cycles only, so a session always ends after an out-breath + hold.
+      totalMs = Math.max(1, Math.round(minutes * 60000 / CYCLE_MS)) * CYCLE_MS;
+      doneNote.hidden = true;
+      stage.classList.remove('running');
+      void stage.offsetWidth; // restart the CSS animation from 0
+      stage.classList.add('running');
+      startedAt = Date.now();
+      clearTimeout(previewTimer);
+      if (sound === 'off') Sound.stop(); else Sound.play(sound);
+      keepAwake(true);
+      lastPhase = -1;
+      toggleBtn.textContent = 'Stop';
+      countEl.hidden = remainingEl.hidden = false;
+      tick();
+      timer = setInterval(tick, 100);
+    }
+
+    function finish(completed) {
+      clearInterval(timer); timer = null;
+      Sound.stop();
+      keepAwake(false);
+      stage.classList.remove('running');
+      countEl.hidden = remainingEl.hidden = true;
+      toggleBtn.textContent = completed ? 'Go again' : 'Start';
+      if (completed) {
+        var rounds = Math.round(totalMs / CYCLE_MS);
+        phaseEl.textContent = 'Nice. That’s it.';
+        doneNote.innerHTML = 'You just did <strong>' + rounds + ' rounds</strong> of box breathing. Back to it whenever you’re ready.';
+        doneNote.hidden = false;
+      } else {
+        phaseEl.textContent = 'Ready when you are';
+      }
+    }
+
+    toggleBtn.addEventListener('click', function () { timer ? finish(false) : start(); });
+
+    lengthBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        minutes = Number(b.dataset.min);
+        lengthBtns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      });
+    });
+
+    function pickSound(kind) {
+      sound = kind;
+      soundBtns.forEach(function (o) { o.setAttribute('aria-pressed', String(o.dataset.sound === kind)); });
+    }
+    try { var saved = localStorage.getItem('breatheSound'); if (['off', 'waves', 'rain', 'fire'].indexOf(saved) > -1) pickSound(saved); } catch (e) {}
+
+    soundBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        pickSound(b.dataset.sound);
+        try { localStorage.setItem('breatheSound', sound); } catch (e) {}
+        clearTimeout(previewTimer);
+        if (sound === 'off') return Sound.stop(0.6);
+        Sound.play(sound);
+        if (timer) {
+          Sound.breath(lastPhase);
+        } else {
+          // Not in a session: play a short preview, with a swell if it's waves.
+          Sound.breath(0);
+          previewTimer = setTimeout(function () { Sound.stop(); }, 4000);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.code !== 'Space' || e.target.closest('button, a, input, textarea')) return;
+      e.preventDefault();
+      toggleBtn.click();
+    });
+  })();
+</script>
+
+</body></html>
