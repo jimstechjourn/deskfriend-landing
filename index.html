@@ -279,6 +279,21 @@
   .final .hero-ctas { justify-content:center; margin-top:28px; }
   .final .hero-note { display:block; margin-top:16px; }
 
+  /* ---------------- buy me a coffee ---------------- */
+  .coffee { padding:0 0 clamp(56px,8vw,96px); }
+  .coffee-card {
+    max-width:720px; margin:0 auto; display:flex; align-items:center; gap:clamp(18px,3vw,28px);
+    background:var(--surface); border:1px solid var(--line); border-radius:24px;
+    padding:clamp(20px,3vw,28px) clamp(22px,3.5vw,32px); box-shadow:var(--shadow-sm);
+  }
+  .coffee-card svg.pip { width:72px; height:72px; flex:none; }
+  .coffee-card .copy { flex:1; }
+  .coffee-card h3 { font-size:1.25rem; }
+  .coffee-card p { margin-top:4px; color:var(--ink-soft); font-size:.96rem; }
+  .coffee-card .btn { flex:none; }
+  .coffee-card .btn svg { width:18px; height:18px; }
+  @media (max-width:640px) { .coffee-card { flex-direction:column; text-align:center; } }
+
   /* ---------------- footer ---------------- */
   footer { border-top:1px solid var(--line); padding:28px 0; }
   footer .wrap { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
@@ -493,6 +508,22 @@
       <a class="btn btn-primary" id="cta-final" href="https://chromewebstore.google.com/detail/deskfriend/jgbenhpehfoakcbminfkgfdocimcgfoa" target="_blank" rel="noopener">Add to Chrome</a>
     </div>
     <span class="hero-note">Free on the Chrome Web Store &middot; No account &middot; Nothing leaves your device</span>
+  </div>
+</section>
+
+<section class="coffee" aria-labelledby="coffee-title">
+  <div class="wrap">
+    <div class="coffee-card">
+      <svg class="pip" viewBox="0 0 128 128" aria-hidden="true"><use href="#pip-mark"/></svg>
+      <div class="copy">
+        <h3 id="coffee-title">Enjoying DeskFriend?</h3>
+        <p>It&rsquo;s free, with no ads and no tracking. If Pip&rsquo;s made your desk days a bit better, you can buy him a coffee. It keeps the project going.</p>
+      </div>
+      <a class="btn btn-ghost" href="https://buymeacoffee.com/deskfriend" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg>
+        Buy Pip a coffee
+      </a>
+    </div>
   </div>
 </section>
 
